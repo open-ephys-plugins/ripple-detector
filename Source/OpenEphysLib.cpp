@@ -20,50 +20,50 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "RippleDetector.h"
 #include <PluginInfo.h>
 #include <string>
-#include "RippleDetector.h"
 
 #ifdef _WIN32
 #include <Windows.h>
-#define EXPORT __declspec(dllexport)
+#define EXPORT __declspec (dllexport)
 #else
-#define EXPORT __attribute__((visibility("default")))
+#define EXPORT __attribute__ ((visibility ("default")))
 #endif
 
 using namespace Plugin;
 
-extern "C" EXPORT void getLibInfo(Plugin::LibraryInfo *info)
+extern "C" EXPORT void getLibInfo (Plugin::LibraryInfo* info)
 {
-	info->apiVersion = PLUGIN_API_VER;
-	info->name = "Ripple Detector";
-	info->libVersion = "0.2.0";
-	info->numPlugins = 1;
+    info->apiVersion = PLUGIN_API_VER;
+    info->name = "Ripple Detector";
+    info->libVersion = "0.2.0";
+    info->numPlugins = 1;
 }
 
-extern "C" EXPORT int getPluginInfo(int index, Plugin::PluginInfo *info)
+extern "C" EXPORT int getPluginInfo (int index, Plugin::PluginInfo* info)
 {
-	switch (index)
-	{
-	case 0:
-		info->type = Plugin::PROCESSOR;
-		info->processor.name = "Ripple Detector";
-		info->processor.type = Plugin::Processor::FILTER;
-		info->processor.creator = &(Plugin::createProcessor<RippleDetector>);
-		break;
-	default:
-		return -1;
-		break;
-	}
-	return 0;
+    switch (index)
+    {
+        case 0:
+            info->type = Plugin::PROCESSOR;
+            info->processor.name = "Ripple Detector";
+            info->processor.type = Plugin::Processor::FILTER;
+            info->processor.creator = &(Plugin::createProcessor<RippleDetector>);
+            break;
+        default:
+            return -1;
+            break;
+    }
+    return 0;
 }
 
 #ifdef WIN32
-BOOL WINAPI DllMain(IN HINSTANCE hDllHandle,
-					IN DWORD nReason,
-					IN LPVOID Reserved)
+BOOL WINAPI DllMain (IN HINSTANCE hDllHandle,
+                     IN DWORD nReason,
+                     IN LPVOID Reserved)
 {
-	return TRUE;
+    return TRUE;
 }
 
 #endif
