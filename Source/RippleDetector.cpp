@@ -456,9 +456,9 @@ void RippleDetector::process(AudioBuffer<float>& buffer)
 			{
 				if (settings[streamId]->movSwitch.equalsIgnoreCase("ACC"))
 				{
-					for (int i = 0; i < settings[streamId]->auxChannelIndices.size(); i++)
+					for (int i = 0; i < settings[streamId]->movementChannels.size(); i++)
 					{
-						accelData[i] = buffer.getReadPointer(settings[streamId]->auxChannelIndices[i], 0);
+						accelData[i] = buffer.getReadPointer(settings[streamId]->movementChannels[i], 0);
 					}
 					accMagnit = calculateAccelMod(accelData, numSamplesInBlock);
 				}
