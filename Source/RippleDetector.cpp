@@ -32,20 +32,17 @@ void RippleDetector::registerParameters()
         "Continuous input channel on which ripples will be detected.",
         1);
 
-    addIntParameter (
+    addTtlLineParameter (
         Parameter::STREAM_SCOPE,
         "Ripple_Out",
         "Ripple Output",
         "TTL line on which output events will be triggered",
-        1, //default
-        1, //min
-        16 //max
-    );
+        16);
 
     addFloatParameter (
         Parameter::STREAM_SCOPE,
         "ripple_std",
-        "Ripple STDDEV",
+        "Ripple Std Dev",
         "Number of RMS standard deviations above the mean to calculate the amplitude threshold",
         "",
         5, //default
@@ -57,7 +54,7 @@ void RippleDetector::registerParameters()
     addFloatParameter (
         Parameter::STREAM_SCOPE,
         "time_thresh",
-        "Time Threshold",
+        "Time Thresh.",
         "Minimum period (in ms) during which the RMS values must be above the amplitude threshold for ripples to be detected.",
         "ms",
         10,
@@ -68,7 +65,7 @@ void RippleDetector::registerParameters()
     addFloatParameter (
         Parameter::STREAM_SCOPE,
         "refr_time",
-        "Refractory Time",
+        "Refrac. Time",
         "The period (in ms) after each detection event in which new ripples cannot be detected.",
         "ms",
         140,
@@ -91,7 +88,7 @@ void RippleDetector::registerParameters()
     addCategoricalParameter (
         Parameter::STREAM_SCOPE,
         "mov_detect",
-        "Movement Detect",
+        "Mov. Detect",
         "If OFF is selected, the mechanism of event blockage based on movement detection is disabled and ripples are not silenced. \
 		If ACC is selected, the RMS of all auxiliary channels are used to calculate the magnitude of the acceleration vector. \
 		If EMG is selected, an input channel is designated",
@@ -101,23 +98,21 @@ void RippleDetector::registerParameters()
     addSelectedChannelsParameter (
         Parameter::STREAM_SCOPE,
         "mov_input",
-        "Movement Input",
+        "Mov. Input",
         "the channel to use for movement detection (only affects EMG mode)",
         1);
 
-    addIntParameter (
+    addTtlLineParameter (
         Parameter::STREAM_SCOPE,
         "mov_out",
-        "Movement Output",
+        "Mov. Output",
         "output TTL channel that indicates the period when ripple detection is silenced by movement (OFF if events are not blocked, 1 if events are blocked).",
-        1,
-        1,
         16);
 
     addFloatParameter (
         Parameter::STREAM_SCOPE,
         "mov_std",
-        "Movement STDDEV",
+        "Mov. Std Dev",
         "Number of standard deviations above the average to be the amplitude threshold for the EMG/ACC",
         "",
         5,
@@ -249,7 +244,7 @@ void RippleDetector::parameterValueChanged (Parameter* param)
     }
     else if (paramName.equalsIgnoreCase ("Ripple_Out"))
     {
-        settings[streamId]->rippleOutputChannel = (int) param->getValue() - 1;
+        settings[streamId]->rippleOutputChannel = (int) param->getValue();
     }
     else if (paramName.equalsIgnoreCase ("ripple_std"))
     {
@@ -351,7 +346,7 @@ void RippleDetector::parameterValueChanged (Parameter* param)
     }
     else if (paramName.equalsIgnoreCase ("mov_out"))
     {
-        settings[streamId]->movementOutputChannel = (int) param->getValue() - 1;
+        settings[streamId]->movementOutputChannel = (int) param->getValue();
     }
     else if (paramName.equalsIgnoreCase ("mov_std"))
     {
@@ -547,7 +542,7 @@ std::vector<float> RippleDetector::calculateAccelMod (const float* axis[3], int 
 // Called when calibration step is over
 void RippleDetector::finishCalibration (uint64 streamId)
 {
-    LOGD ("Calibration finished!");
+    LOGC ("Calibration finished!");
 
     // Set flag to false to end the calibration period
     settings[streamId]->isCalibrating = false;

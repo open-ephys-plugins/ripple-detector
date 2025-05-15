@@ -17,7 +17,7 @@ RippleDetectorEditor::RippleDetectorEditor (GenericProcessor* parentNode)
     rippleInput->setLayout (ParameterEditor::Layout::nameOnTop);
     rippleInput->setSize (80, 34);
 
-    addComboBoxParameterEditor (Parameter::ParameterScope::STREAM_SCOPE, "Ripple_Out", align1, 60);
+    addTtlLineParameterEditor (Parameter::ParameterScope::STREAM_SCOPE, "Ripple_Out", align1, 60);
     ParameterEditor* rippleOut = getParameterEditor ("Ripple_Out");
     rippleOut->setLayout (ParameterEditor::Layout::nameOnTop);
     rippleOut->setSize (80, 34);
@@ -29,26 +29,26 @@ RippleDetectorEditor::RippleDetectorEditor (GenericProcessor* parentNode)
     calibrateButton->setBounds (align1, 102, 80, 20);
     addAndMakeVisible (calibrateButton.get());
 
-    int align2 = 95;
+    int align2 = 98;
 
-    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "ripple_std", align2, 29);
+    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "ripple_std", align2, 31);
     ParameterEditor* rippleStd = getParameterEditor ("ripple_std");
     rippleStd->setSize (150, 17);
 
-    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "time_thresh", align2, 54);
+    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "time_thresh", align2, 56);
     ParameterEditor* timeThresh = getParameterEditor ("time_thresh");
     timeThresh->setSize (150, 17);
 
-    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "refr_time", align2, 79);
+    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "refr_time", align2, 81);
     ParameterEditor* refrTime = getParameterEditor ("refr_time");
     refrTime->setSize (150, 17);
 
-    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "rms_samples", align2, 104);
+    addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "rms_samples", align2, 106);
     ParameterEditor* rmsSamples = getParameterEditor ("rms_samples");
     rmsSamples->setSize (150, 17);
 
     /* EMG / ACC Movement Detection Settings */
-    int align3 = 250;
+    int align3 = 255;
     addComboBoxParameterEditor (Parameter::ParameterScope::STREAM_SCOPE, "mov_detect", align3, 22);
     ParameterEditor* movDetect = getParameterEditor ("mov_detect");
     movDetect->setLayout (ParameterEditor::Layout::nameOnTop);
@@ -59,12 +59,12 @@ RippleDetectorEditor::RippleDetectorEditor (GenericProcessor* parentNode)
     movInput->setLayout (ParameterEditor::Layout::nameOnTop);
     movInput->setSize (90, 34);
 
-    addComboBoxParameterEditor (Parameter::ParameterScope::STREAM_SCOPE, "Mov_Out", align3, 92);
+    addTtlLineParameterEditor (Parameter::ParameterScope::STREAM_SCOPE, "Mov_Out", align3, 92);
     ParameterEditor* movOut = getParameterEditor ("Mov_Out");
     movOut->setLayout (ParameterEditor::Layout::nameOnTop);
     movOut->setSize (90, 34);
 
-    int align4 = 345;
+    int align4 = 350;
     addTextBoxParameterEditor (Parameter::STREAM_SCOPE, "mov_std", align4, 22);
     ParameterEditor* movStd = getParameterEditor ("mov_std");
     movStd->setLayout (ParameterEditor::Layout::nameOnTop);
