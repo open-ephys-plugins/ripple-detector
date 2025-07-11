@@ -549,10 +549,10 @@ void RippleDetector::finishCalibration (uint64 streamId)
 
     // Calculate RMS mean and standard deviation and the final amplitude threshold
     int numCalibrationPoints = calibrationRmsValues[streamId].size();
-    printf ("Got	%d calibration points\n", numCalibrationPoints);
-    printf ("RMS mean before: %f\n", settings[streamId]->rmsMean);
+    LOGC ("Got ", numCalibrationPoints, " calibration points");
+    LOGC ("RMS mean before: ", settings[streamId]->rmsMean);
     settings[streamId]->rmsMean = settings[streamId]->rmsMean / (double) numCalibrationPoints;
-    printf ("RMS mean after: %f\n", settings[streamId]->rmsMean);
+    LOGC ("RMS mean after: ", settings[streamId]->rmsMean);
     for (unsigned int idx = 0; idx < numCalibrationPoints; idx++)
     {
         settings[streamId]->rmsStdDev += pow (calibrationRmsValues[streamId][idx] - settings[streamId]->rmsMean, 2.0);
@@ -574,57 +574,28 @@ void RippleDetector::finishCalibration (uint64 streamId)
     }
 
     // Print calculated statistics
+    LOGC ("Ripple channel -> RMS mean: ", settings[streamId]->rmsMean);
+    LOGC ("Ripple channel -> RMS std: ", settings[streamId]->rmsStdDev);
+    LOGC ("Ripple channel -> threshold amplifier: ", settings[streamId]->rippleSds);
+    LOGC ("Ripple channel -> final RMS threshold: ", settings[streamId]->threshold);
+
+    // Print EMG/ACC statistics if the switching mechanism is enabled
     if (settings[streamId]->movSwitchEnabled)
     {
+        String movSwitchStr;
         if (settings[streamId]->movSwitch.equalsIgnoreCase ("EMG"))
         {
-            printf ("Ripple channel -> RMS mean: %f\n"
-                    "Ripple channel -> RMS std: %f\n"
-                    "Ripple channel -> threshold amplifier: %f\n"
-                    "Ripple channel -> final RMS threshold: %f\n"
-                    "EMG RMS mean: %f\n"
-                    "EMG RMS std: %f\n"
-                    "EMG threshold amplifier: %f\n"
-                    "EMG final RMS threshold: %f\n",
-                    settings[streamId]->rmsMean,
-                    settings[streamId]->rmsStdDev,
-                    settings[streamId]->rippleSds,
-                    settings[streamId]->threshold,
-                    settings[streamId]->movRmsMean,
-                    settings[streamId]->movRmsStdDev,
-                    settings[streamId]->movSds,
-                    settings[streamId]->movThreshold);
+            movSwitchStr = "EMG";
         }
         else
         {
-            printf ("Ripple channel -> RMS mean: %f\n"
-                    "Ripple channel -> RMS std: %f\n"
-                    "Ripple channel -> threshold amplifier: %f\n"
-                    "Ripple channel -> final RMS threshold: %f\n"
-                    "Accel. magnit. RMS mean: %f\n"
-                    "Accel. magnit. RMS std: %f\n"
-                    "Accel. magnit. threshold amplifier: %f\n"
-                    "Accel. magnit. final RMS threshold: %f\n",
-                    settings[streamId]->rmsMean,
-                    settings[streamId]->rmsStdDev,
-                    settings[streamId]->rippleSds,
-                    settings[streamId]->threshold,
-                    settings[streamId]->movRmsMean,
-                    settings[streamId]->movRmsStdDev,
-                    settings[streamId]->movSds,
-                    settings[streamId]->movThreshold);
+            movSwitchStr = "Accel. Magnit.";
         }
-    }
-    else
-    {
-        printf ("Ripple channel -> RMS mean: %f\n"
-                "Ripple channel -> RMS std: %f\n"
-                "Ripple channel -> threshold amplifier: %f\n"
-                "Ripple channel -> final RMS threshold: %f\n",
-                settings[streamId]->rmsMean,
-                settings[streamId]->rmsStdDev,
-                settings[streamId]->rippleSds,
-                settings[streamId]->threshold);
+
+        LOGC (movSwitchStr, " RMS mean: ", settings[streamId]->movRmsMean);
+        LOGC (movSwitchStr, " RMS std: ", settings[streamId]->movRmsStdDev);
+        LOGC (movSwitchStr, " threshold amplifier: ", settings[streamId]->movSds);
+        LOGC (movSwitchStr, " final RMS threshold: ", settings[streamId]->movThreshold);
     }
 }
 
@@ -681,11 +652,11 @@ void RippleDetector::detectRipples (uint64 streamId)
                     getFirstSampleNumberForBlock (streamId) + rmsIdx,
                     1);
                 addEvent (event, rmsIdx);
-                LOGC ("Ripple detected on stream: ", streamId);
+                // LOGC ("Ripple detected on stream: ", streamId);
             }
             else
             {
-                LOGC ("Ripple detected on stream", streamId, "but TTL event was blocked by movement detection.\n");
+                // LOGC ("Ripple detected on stream", streamId, "but TTL event was blocked by movement detection.\n");
             }
 
             settings[streamId]->rippleDetected = true;
